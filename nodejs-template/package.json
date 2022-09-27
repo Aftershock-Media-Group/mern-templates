@@ -1,0 +1,35 @@
+{
+  "name": "nodejs-starter-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon -r esm server.js"
+  },
+  "keywords": [],
+  "author": "Mridul Pareek",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "express-session": "^1.17.3",
+    "helmet": "^4.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.13",
+    "mongoose-lean-virtuals": "^0.9.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15",
+    "normalize-mongoose": "^0.0.1",
+    "passport": "^0.6.0",
+    "passport-google-oidc": "^0.1.0",
+    "socket.io-client": "^2.3.0",
+    "uuidv4": "^6.2.12"
+  },
+  "devDependencies": {
+    "@types/socket.io-client": "^3.0.0"
+  }
+}
