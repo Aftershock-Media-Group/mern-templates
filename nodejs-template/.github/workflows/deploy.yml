@@ -1,0 +1,26 @@
+
+name: Deploy
+
+on:
+  push:
+    branches: [ "NONE" ]
+  pull_request:
+    branches: [ "NONE" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v0.1.2
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: amg
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        script: |
+          cd ./dir
+          git pull
+          npm i
+          pm2 restart 100
+          curl -d '{"text": "https://api.template.com/ [BACKEND] deployed! 🚀"}' -H "Content-Type: application/json" -X POST ${{ secrets.SLACK_WEBHOOK }}
