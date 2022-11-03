@@ -8,23 +8,23 @@ export default (passport, api) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: 'http://localhost:5021/oauth2/google',
+        callbackURL: `${process.env.REDIRECT_URL}oauth2/google`,
       },
       async function (issuer, profile, cb) {
-        console.log(profile)
-        const user = await UserModel.findOne(
+        let user = await UserModel.findOne(
           { email: profile.emails[0].value },
           'name _id role'
         )
-        if (user) {
-          if (!user.name) {
-            user.name = profile.displayName
-            await user.save()
-          }
-          return cb(null, user)
-        } else {
+        if (!profile.emails[0].value.includes('amg.gg')) {
           return cb(null, null)
         }
+        if (!user) {
+          user = await UserModel.create({
+            email: profile.emails[0].value,
+            name: profile.displayName,
+          })
+        }
+        return cb(null, user)
       }
     )
   )
@@ -32,12 +32,12 @@ export default (passport, api) => {
   api.get(
     '/oauth2/google',
     passport.authenticate('google', {
-      failureRedirect: 'http://localhost:3000/error',
+      failureRedirect: `${process.env.OAUTH_URL}error`,
       session: false,
     }),
     function (req, res) {
       res.redirect(
-        `http://localhost:3000/?token=${createAuthToken(req.user._id)}&role=${
+        `${process.env.OAUTH_URL}?token=${createAuthToken(req.user._id)}&role=${
           req.user.role
         }&name=${req.user.name}&_id=${req.user._id}`
       )
